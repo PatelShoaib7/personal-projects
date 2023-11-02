@@ -12,7 +12,7 @@ require('dotenv').config();
         new GoogleStrategy({
         clientID:process.env.GOOGLE_CLIENT_ID,
         clientSecret:process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: 'https://backend-personal-project-shoaib-patel.onrender.com/auth/open/auth/google/callback',
+        callbackURL: 'https://backend-personal-project-shoaib-patel.onrender.com/open/auth/google/callback',
         scope: ['profile','email']
       }, 
        async function(accessToken, refreshToken, profile, cb) {
