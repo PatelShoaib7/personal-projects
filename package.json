@@ -12,6 +12,7 @@
     "array-flatten": "^1.1.1",
     "aws-sdk": "^2.1486.0",
     "axios": "^1.6.0",
+     "pdf-lib": "^1.17.1",
     "balanced-match": "^1.0.2",
     "binary-extensions": "^2.2.0",
     "body-parser": "^1.20.2",
