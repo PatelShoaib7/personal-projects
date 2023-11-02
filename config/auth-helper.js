@@ -13,7 +13,7 @@ require('dotenv').config();
         new GoogleStrategy({
         clientID:process.env.GOOGLE_CLIENT_ID,
         clientSecret:process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL: "http://localhost:5040/auth/open/auth/google/callback",
+        callbackURL: `${process.env.PRODUCTION_SERVER}/auth/open/auth/google/callback`,
         scope: ['profile','email']
       }, 
        async function(accessToken, refreshToken, profile, cb) {
