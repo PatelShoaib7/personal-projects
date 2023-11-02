@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
   app.use(cors());
 app.use(verifyOrigin);
 
-app.use("/auth/open", Open_AuthRouter);
+app.use("/open", Open_AuthRouter);
 // app.use("/home",(req , res )=>{
 //   res.send("hellllllllooooo")
 // })
