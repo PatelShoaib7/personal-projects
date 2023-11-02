@@ -7,14 +7,14 @@ const userRoutes = express.Router();
 const cloudinary = require("cloudinary");
 const user = require("../api/pdf-merger/user");
 
-userRoutes.get("/home", user.checkWorking);
-userRoutes.post("/add/user", user.colletUserData);
+// userRoutes.get("/home", user.checkWorking);
+// userRoutes.post("/add/user", user.colletUserData);
 
 //UPLOAD-FILE-TO-S3
-userRoutes.post("/merge/single/uplaodPdf",upload_pdf.S3upload.single("file"),user.UploadPDF_S);
+// userRoutes.post("/merge/single/uplaodPdf",upload_pdf.S3upload.single("file"),user.UploadPDF_S);
 
 //MERGE-CODE
-userRoutes.get("/mergeAllPDF", user.mergeAllPDF);
+//userRoutes.get("/mergeAllPDF", user.mergeAllPDF);
 
 //
 
