@@ -1,7 +1,6 @@
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const passport = require('passport');
 const userModel = require('../models/userModel');
-const user = require('../api/pdf-merger/user');
 const { componentsToColor } = require('pdf-lib');
 const { Google_Authoriztaion } = require('../Authentication/google-o-auth');
 const { default: mongoose } = require('mongoose');
