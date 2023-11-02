@@ -9,15 +9,13 @@ const { propfind } = require('../Routes/open-auth-routes');
 
 require('dotenv').config();
 
-    
-passport.use(
+    passport.use(
         new GoogleStrategy({
         clientID:process.env.GOOGLE_CLIENT_ID,
         clientSecret:process.env.GOOGLE_CLIENT_SECRET,
-        callbackURL:'https://persaonal-projecr-shoaib.onrender.com/auth/open/auth/google/callback',
+        callbackURL: 'https://persaonal-projecr-shoaib.onrender.com/auth/open/auth/google/callback',
         scope: ['profile','email']
       }, 
-      
        async function(accessToken, refreshToken, profile, cb) {
         console.log("-----------------accessToken------------------------------------",accessToken)
         console.log("---------------------refreshToken--------------------------------",refreshToken)
