@@ -5,7 +5,7 @@ const { S3uplaod } = require("../middleware/upload");
 const upload_pdf = require("../middleware/upload");
 const userRoutes = express.Router();
 const cloudinary = require("cloudinary");
-const user = require("../api/pdf-merger/user");
+const user = require("../api/user");
 
 userRoutes.get("/home", user.checkWorking);
 userRoutes.post("/add/user", user.colletUserData);
@@ -17,6 +17,10 @@ userRoutes.post("/add/user", user.colletUserData);
 userRoutes.get("/mergeAllPDF", user.mergeAllPDF);
 
 //
+
+//sendEmailTo
+userRoutes.get("/send/email", user.sendEmail_Funationality);
+
 
 module.exports = {
   userRoutes: userRoutes,

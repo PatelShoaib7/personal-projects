@@ -1,9 +1,10 @@
 "use strict";
 const cloudinary = require("cloudinary");
 const fs = require("fs");
-const userSchema = require("../../models/userModel");
-const utils = require("../../utils/utils");
-const { mergePDF_Func } = require("./mergePdf");
+const userSchema = require("../models/userModel");
+const utils = require("../utils/utils");
+const { mergePDF_Func } = require("./pdf-merger/mergePdf");
+const sendEmail = require("../Emails/all-emails-main-fuction-code/sendEmail");
 
 const checkWorking = (req, res) => {
   utils.sendResponse(req, res, 200, "Hellow World !", [
@@ -104,9 +105,21 @@ const mergeAllPDF = async (req, res) => {
 
     });
 };
+
+const sendEmail_Funationality =async(req , res )=>{
+  const finalRespons =  await sendEmail.Trigger_Email("shoaib")
+  console.log("-----  finalRespons ------", finalRespons)
+
+   res.send({
+              msg : "email sent sucxessfullly",
+              finalRespons : finalRespons 
+            })
+            
+}
 module.exports = {
   checkWorking: checkWorking,
   colletUserData: colletUserData,
   UploadPDF_S: UploadPDF_S,
   mergeAllPDF: mergeAllPDF,
+  sendEmail_Funationality : sendEmail_Funationality
 };
