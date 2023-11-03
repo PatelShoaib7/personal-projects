@@ -4,11 +4,11 @@ const GoogleAuth  = require('../Authentication/google-o-auth');
 
 
 
-Open_AuthRouter.get('/home',function(req, res, next) { res.send("!Hello World")});
+Open_AuthRouter.get('/',function(req, res, next) { res.send("!Hello World")});
 Open_AuthRouter.get('/auth/google',passport.authenticate('google', { scope: ['profile','email'] }));
 Open_AuthRouter.get('/auth/google/callback', 
                                     passport.authenticate('google',
-                                      { failureRedirect: '/save/oauth/user/data/failed' , 
+                                      { failureRedirect: 'open/save/oauth/user/data/failed' , 
                                         session:false}),
                                         function(req, res, next) {
                                                     res.send(

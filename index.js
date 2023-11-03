@@ -19,10 +19,11 @@ app.use(express.urlencoded({ extended: true }));
   app.use(cors());
 app.use(verifyOrigin);
 
-app.use("/", Open_AuthRouter);
-// app.use("/home",(req , res )=>{
-//   res.send("hellllllllooooo")
-// })
+
+app.use("/",(req , res )=>{
+  res.send("Hello World Application Depolyeed Suceefully");
+})
+app.use("/open", Open_AuthRouter);
 app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 
