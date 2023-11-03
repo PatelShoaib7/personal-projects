@@ -20,12 +20,16 @@ app.use(express.urlencoded({ extended: true }));
 app.use(verifyOrigin);
 
 
-app.use("/",(req , res )=>{
-  res.send("Hello World Application Depolyeed Suceefully");
-})
+
 app.use("/open", Open_AuthRouter);
 app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
+
+
+
+app.use("/",(req , res )=>{
+  res.send("!Hello World Application Depolyeed Suceefully");
+})
 
 /* error handling for 404 routes */
 app.use(function (req, res, next) {
