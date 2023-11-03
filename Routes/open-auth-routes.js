@@ -8,7 +8,7 @@ const GoogleAuth  = require('../Authentication/google-o-auth');
 Open_AuthRouter.get('/auth/google',passport.authenticate('google', { scope: ['profile','email'] }));
 Open_AuthRouter.get('/auth/google/callback', 
                                     passport.authenticate('google',
-                                      { failureRedirect: '/open/save/oauth/user/data/failed' , 
+                                      { failureRedirect: '/save/oauth/user/data/failed' , 
                                         session:false}),
                                         function(req, res, next) {
                                                     res.send(
