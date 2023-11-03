@@ -15,7 +15,7 @@ const Google_Authoriztaion_Failed =async (req, res)=>{
       errCode:1,
       status :502,
      })
-}
+} 
 const Github_Authoriztaion=async ()=>{
 
 }
