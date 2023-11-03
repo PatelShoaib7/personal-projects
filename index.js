@@ -26,20 +26,22 @@ app.use("/user", userRoutes);
 app.use("/admin", adminRoutes);
 
 
-
-app.use("/",(req , res )=>{
-  res.send("!Hello World Application Depolyeed Suceefully");
-})
-
 /* error handling for 404 routes */
 app.use(function (req, res, next) {
   var err = new Error("request not found");
   err.status = 404;
+
+  if(req.url ==  process.env.PRODUCTION_SERVER){
+    res.status(err.status || 500).send({
+                                        errCode: 23,
+                                        errMsg: "!Hello World Application Depeloyedd Suceefully",
+                                      });
+  }
   res.status(err.status || 500).send({
-    errCode: 23,
-    errMsg: "request not found",
+                                        errCode: 23,
+                                        errMsg: "request not found",
+                                      });
   });
-});
 
 app.listen(PORT || 8000, async (req, res) => {
   console.log("----  App  Started Running -----");
