@@ -10,7 +10,7 @@ const Trigger_Email = async(emailid, subject, mailBody, carbonCopy = [], attachm
           auth: {
             user: process.env.EMAIL_USER_EMAIL_ID,
             pass: process.env.EMAIL_ID_PASSWORD
-          }
+          } 
         }
       );
       console.log("Into the utils and the attachment is this : ", attachment )

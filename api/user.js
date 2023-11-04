@@ -4,7 +4,8 @@ const fs = require("fs");
 const userSchema = require("../models/userModel");
 const utils = require("../utils/utils");
 const { mergePDF_Func } = require("./pdf-merger/mergePdf");
-const sendEmail = require("../Emails/all-emails-main-fuction-code/sendEmail");
+const { default: axios } = require("axios");
+const nykaPrductsModel = require("../models/nykaaModels.js/nykaProductModel")
 
 const checkWorking = (req, res) => {
   utils.sendResponse(req, res, 200, "Hellow World !", [
@@ -106,20 +107,46 @@ const mergeAllPDF = async (req, res) => {
     });
 };
 
-const sendEmail_Funationality =async(req , res )=>{
-  const finalRespons =  await sendEmail.Trigger_Email("shoaib")
-  console.log("-----  finalRespons ------", finalRespons)
 
-   res.send({
-              msg : "email sent sucxessfullly",
-              finalRespons : finalRespons 
-            })
-            
-}
+const Nyaka_Products_Data  =async (req , res )=>{
+  
+     const BulkQuries  =[];
+      
+   let URL = 'http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline'
+   const Products_Data_Form_API =   await axios.get(URL)
+                                     .then((response)=>{
+                                      return response.data
+                                      })
+                                     .catch((error)=>{
+                                      return error
+                                     })
+                                     console.log("---Products_Data_Form_API----",Products_Data_Form_API.length)
+//  res.send(Products_Data_Form_API)   
+
+   for(let  i = 0; i<Products_Data_Form_API.length; i++){
+    delete Products_Data_Form_API[i].id
+        var insertThisProduct_Data = {
+                "brand":Products_Data_Form_API[i].brand,
+                ...Products_Data_Form_API[i]
+         };
+         BulkQuries.push({ 
+                         insertOne : 
+                                    {
+                                      document : insertThisProduct_Data
+                                    }
+                         })
+     }
+  console.log()
+   const BulkReponse = await nykaPrductsModel.bulkWrite(BulkQuries)
+   
+     console.log("----BulkReponse---",BulkReponse)
+  res.send(BulkReponse)
+    }
+
 module.exports = {
   checkWorking: checkWorking,
   colletUserData: colletUserData,
   UploadPDF_S: UploadPDF_S,
   mergeAllPDF: mergeAllPDF,
-  sendEmail_Funationality : sendEmail_Funationality
+  Nyaka_Products_Data:Nyaka_Products_Data
 };
