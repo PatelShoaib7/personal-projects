@@ -1,3 +1,5 @@
+const sendEmail = require("./emails-otp-main-code/sendEmail")
+
 const sendEmail_Funationality =async(req , res )=>{
     const finalRespons =  await sendEmail.Trigger_Email("shoaib")
     console.log("-----  finalRespons ------", finalRespons)
