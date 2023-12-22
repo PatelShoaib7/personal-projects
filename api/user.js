@@ -5,7 +5,9 @@ const userSchema = require("../models/userModel");
 const utils = require("../utils/utils");
 const { mergePDF_Func } = require("./pdf-merger/mergePdf");
 const { default: axios } = require("axios");
-const nykaPrductsModel = require("../models/nykaaModels.js/nykaProductModel")
+const nykaPrductsModel = require("../models/nykaaModels.js/nykaProductModel");
+const PolicyIssuanceSchema = require("../models/PolicyIssuanceSchema");
+const { default: mongoose } = require("mongoose");
 
 const checkWorking = (req, res) => {
   utils.sendResponse(req, res, 200, "Hellow World !", [
@@ -143,10 +145,129 @@ const Nyaka_Products_Data  =async (req , res )=>{
   res.send(BulkReponse)
     }
 
-module.exports = {
+
+
+
+ const DataBase_Facet_Pipeline = async (req , res )=>{
+//{"CTPL_VehicalInfo_for_Policy.modelYear" : {$gte : "2023"}
+//
+//
+//
+//
+
+  const Data  = await PolicyIssuanceSchema.aggregate([
+    {  //Here facet pipeline  == async.series   --  will execute quierie one by one eith match opeorator
+      $facet : {
+           Travel :[
+            {
+              $match :{
+                "LOB" :"Travel"
+              }
+            },
+           ],
+           CTPL : [
+            {
+              $match :{
+                "LOB" :"Travel"
+              }
+            },
+           ],
+           Motor :[
+            {
+              $match :{
+                "LOB": "Motor"
+              }
+            },
+           ],
+           Counts: [
+            {
+              $match :{
+                "LOB":"CTPL"
+              }
+            },
+            { $sort : { "createdAt": -1 } },
+            { $limit : 5 },
+            {
+              $count : "Ctpl_count"
+            } 
+           ]
+           
+      }
+    }
+  ])
+                    //.find({}, 
+                    //  {
+                    //   _id: 0,
+                    //   // LOB: 1,
+                    //   quotationNumber: 1,
+                    //   leadId : 1,
+                    //   userId: 1,
+                    //   createdAt : 1,
+                    //   updatedAt : 1,
+                    //   CTPL_VehicalInfo_for_Policy :1
+                    // })
+                    //.limit(5).skip(5)
+      return utils.sendResponse(req, res, 200,`PDF Merged Successfully ${Data.length}` ,Data);
+
+ }
+
+
+ const DataBase_FacetPipeline_With_LookupWindUNwindProject  = async(req , res)=>{
+
+
+  const Data  =await  PolicyIssuanceSchema.aggregate([
+                                                        {
+                                                           $facet : {
+                                                                "policyData":[
+                                                                  {
+                                                                     $match :{
+                                                                              "_id":new mongoose.Types.ObjectId("6547a062b5e721a0476da34d")
+                                                                        }
+                                                                 },
+                                                                 {
+                                                                  $lookup :{
+                                                                    from : "users",
+                                                                    let : {foreignField: '$_id'},
+                                                                    //localField:"userId",
+                                                                    pipeline :[
+                                                                      { $match :{ $expr  :{ $eq :[  "$_id" ,"$foreignField" ]}}},
+                                                                      { $project: { _id: 1,
+                                                                                   primary_email: 1, 
+                                                                                   name: { $concat: ["$first_name", " ", "$last_name"] },
+                                                                                   //agent_id: 1, mobile_no: 1
+                                                                                   } 
+                                                                                  },
+                                                                    ],
+                                                                      as: 'Policy_ByAgent'
+                                                                  },
+                                                                 },
+                                                               
+                                                                ]
+                                                                // ,
+                                                                //  "TravelData_Count" :[
+                                                                //   {
+                                                                //     $match   :{
+                                                                //               "LOB":"Travel"  
+                                                                //     }
+                                                                //   },{
+                                                                //     $count :"TravelData_Count"                                                                  }
+                                                                //  ]
+                                                        },
+                                                        
+                                                      }])
+                                                      console.log("----Data from DB --",Data[0].policyData)
+      return utils.sendResponse(req, res, 200,`PDF Merged Successfully` ,Data);
+
+ }
+
+
+
+  module.exports = {
   checkWorking: checkWorking,
   colletUserData: colletUserData,
   UploadPDF_S: UploadPDF_S,
   mergeAllPDF: mergeAllPDF,
-  Nyaka_Products_Data:Nyaka_Products_Data
+  Nyaka_Products_Data:Nyaka_Products_Data,
+  DataBase_Facet_Pipeline : DataBase_Facet_Pipeline,
+  DataBase_FacetPipeline_With_LookupWindUNwindProject : DataBase_FacetPipeline_With_LookupWindUNwindProject
 };

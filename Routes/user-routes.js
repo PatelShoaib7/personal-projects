@@ -32,6 +32,12 @@ userRoutes.get("/send/otp", allEmailCode.sendOTP_ON_Email);
 //NYKAA  - - - - - - - PRODUCTS
 userRoutes.get("/nykaa/products", user.Nyaka_Products_Data);
 
+//DataBase Learning Likesh Shared Link
+//Facet-Pipeline   --- Async,series
+userRoutes.get("/database/learning", user.DataBase_Facet_Pipeline);
+
+//facet  with lookup wind unwind project
+userRoutes.get("/database/facet/lookup", user.DataBase_FacetPipeline_With_LookupWindUNwindProject);
 
 
 module.exports = {
