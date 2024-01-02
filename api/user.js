@@ -260,7 +260,9 @@ const Nyaka_Products_Data  =async (req , res )=>{
 
  }
 
+const UpdateExistingDateOfStringFormat =()=>{
 
+}
 
   module.exports = {
   checkWorking: checkWorking,
@@ -269,5 +271,6 @@ const Nyaka_Products_Data  =async (req , res )=>{
   mergeAllPDF: mergeAllPDF,
   Nyaka_Products_Data:Nyaka_Products_Data,
   DataBase_Facet_Pipeline : DataBase_Facet_Pipeline,
-  DataBase_FacetPipeline_With_LookupWindUNwindProject : DataBase_FacetPipeline_With_LookupWindUNwindProject
+  DataBase_FacetPipeline_With_LookupWindUNwindProject : DataBase_FacetPipeline_With_LookupWindUNwindProject,
+   UpdateExistingDateOfStringFormat : UpdateExistingDateOfStringFormat
 };

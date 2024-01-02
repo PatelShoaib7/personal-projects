@@ -40,9 +40,28 @@ userRoutes.get("/database/learning", user.DataBase_Facet_Pipeline);
 userRoutes.get("/database/facet/lookup", user.DataBase_FacetPipeline_With_LookupWindUNwindProject);
 
 
+//update existing string date into Actual Date Format
+userRoutes.get("/update/dates/from/string-to-date", user.UpdateExistingDateOfStringFormat);
+
+
+
+
 module.exports = {
   userRoutes: userRoutes,
 };
 
 // cloudinary.v2.uploader.upload("sample.pdf",
 //   function(error, result) {console.log(result, error); });
+
+
+
+// {
+//   $set: {
+//     dateField: {
+//       $dateToString: {
+//         date: '$dateField',
+//         format: '%d %B %Y' // Desired output format: 'DD Month YYYY'
+//       }
+//     }
+//   }
+// }

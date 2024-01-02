@@ -130,8 +130,8 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "devDependencies": {
     "node-migrate": "^0.1.0"
-  }
+  },
+  "description": ""
 }

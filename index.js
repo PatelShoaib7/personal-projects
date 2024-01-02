@@ -3,7 +3,8 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 const cloudinary = require("cloudinary");
-const PORT = process.env.PORT;
+const PORT =1111
+// process.env.PORT;
 const { userRoutes } = require("./Routes/user-routes");
 const { adminRoutes } = require("./Routes/admin-routes");
 const { connection } = require("./config/dataBase");
@@ -38,7 +39,7 @@ app.use(function (req, res, next) {
                                       });
   });
 
-app.listen(PORT || 8000, async (req, res) => {
+app.listen(PORT, async (req, res) => {
   console.log("----  App  Started Running -----");
   await connection;
   try {
