@@ -63,6 +63,7 @@
     "is-glob": "^4.0.3",
     "is-number": "^7.0.0",
     "latest-version": "^7.0.0",
+    "lodash": "^4.17.21",
     "lru-cache": "^6.0.0",
     "media-typer": "^0.3.0",
     "merge-descriptors": "^1.0.1",

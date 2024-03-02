@@ -8,6 +8,10 @@ const { default: axios } = require("axios");
 const nykaPrductsModel = require("../models/nykaaModels.js/nykaProductModel");
 const PolicyIssuanceSchema = require("../models/PolicyIssuanceSchema");
 const { default: mongoose } = require("mongoose");
+const { leadSchema } = require("../models/leadModel");
+const { activityTracker_Schema } = require("../models/TrackerModel");
+var async = require("async");
+const patternRegex = require("./patternRegex");
 
 const checkWorking = (req, res) => {
   utils.sendResponse(req, res, 200, "Hellow World !", [
@@ -264,6 +268,177 @@ const UpdateExistingDateOfStringFormat =()=>{
 
 }
 
+const _ = require('lodash');
+
+
+const getProductionReportTillGivenDates = async (req, res) => {
+    let { fromDate, uptoDate } = req.query;
+  
+    console.log("--req.query --", fromDate, uptoDate);
+  
+    if (!fromDate) {
+      utils.sendResponse(req, res, 200, 1, "Mandatory filed fromDate not found");
+      return;
+    }
+    if (!uptoDate) {
+      utils.sendResponse(req, res, 200, 1, "Mandatory filed uptoDate not found");
+      return;
+    }
+  
+    if (!patternRegex.MILISECOND_DATE.test(fromDate)) {
+      utils.sendResponse(req, res, 200, 236, "Invalid fromDate Key");
+      return;
+    }
+    if (!patternRegex.MILISECOND_DATE.test(uptoDate)) {
+      utils.sendResponse(req, res, 200, 236, "Invalid uptoDate Key");
+      return;
+    }
+    parseInt(fromDate); //fromDate
+    parseInt(uptoDate); //uptoDate
+  
+    //get all date Object Details
+    // let fromDate_dateObject = new Date(fromDate);
+    // let uptoDate_dateObject = new Date(uptoDate)
+  
+    //Convert to ISO
+    const fromDate_dateObjectString = new Date(parseInt(fromDate)).toISOString();
+    const uptoDate_dateObjectString = new Date(parseInt(uptoDate)).toISOString();
+  
+    //Actual ISO Date Required
+    const ISO_fromDate = `ISODate("${fromDate_dateObjectString}")`;
+    const ISO_uptoDate = `ISODate("${uptoDate_dateObjectString}")`;
+  
+    console.log("----ISO DATE FROM -----", ISO_fromDate);
+    console.log("----ISO DATE TO -----", ISO_uptoDate);
+  
+    const commonQuery_ForAll = [
+      {
+        $project: {
+          formattedDate: {
+            $dateToString: {
+              format: "%Y-%m-%d",
+              date: {
+                $toDate: {
+                  $multiply: ["$created_date", 1], // Convert milliseconds to seconds
+                },
+              },
+            },
+          },
+        },
+      },
+      {
+        $sort: {
+          formattedDate: 1, // 1 for ascending order, -1 for descending order
+        },
+      },
+      {
+        $group: {
+          _id: "$formattedDate",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $sort: {
+          _id: 1, // 1 for ascending order, -1 for descending order
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          count: 1,
+        },
+      },
+    ];
+  
+    const DataFrom_DB = await async.parallel(
+      {
+        userLogins: async () => {
+          console.log("---- userLogins execution ---");
+          const logindata = await activityTracker_Schema.aggregate([
+            {
+              $match: {
+                type: "User Login Tracker",
+                created_date: {
+                  $gte: parseInt(fromDate),
+                  $lte: parseInt(uptoDate),
+                },
+              },
+            },
+            ...commonQuery_ForAll,
+          ]);
+          return logindata;
+        },
+        leadsCreated: async () => {
+          console.log("---- leadsCreated execution ---");
+          let leadsCreateddata = await leadSchema.aggregate([
+            {
+              $match: {
+                created_date: {
+                  $gte: parseInt(fromDate),
+                  $lte: parseInt(uptoDate),
+                },
+              },
+            },
+            ...commonQuery_ForAll,
+          ]);
+          return leadsCreateddata;
+        },
+        proposalConverted: async () => {
+          console.log("---- proposalConverteddata execution ---");
+          let proposalConverteddata = await leadSchema.aggregate([
+            {
+              $match: {
+                isPolicyIssued: true,
+                created_date: {
+                  $gte: parseInt(fromDate),
+                  $lte: parseInt(uptoDate),
+                },
+              },
+            },
+            ...commonQuery_ForAll,
+          ]);
+          //console.log("---- proposalConverteddata result ---",proposalConverteddata)
+  
+          return proposalConverteddata;
+        },
+         policiesIssued: async () => {
+        //   console.log("---- policiesData execution ---")
+  
+        //   const [,...queryToGetPolicyData] =commonQuery_ForAll
+        //   let policiesData = await policyIssuanceSchema.aggregate([
+        //     {
+        //       $match :{
+        //         "createdAt" : {$gte : ISO_fromDate, $lte: ISO_uptoDate}
+        //       }
+        //     },
+        //     {
+        //       $project: {
+        //         formattedDate: {
+        //           $dateToString: {
+        //             format: "%Y-%m-%d",
+        //             date :"$createdAt"
+        //           }
+        //         }
+        //       }
+        //     },
+        //     ...queryToGetPolicyData
+        //   ]);
+        // //  console.log("---- policiesData execution ---",policiesData)
+        //   return policiesData
+         },
+      },
+      function (err, results) {
+        // results is now equals to: {one: 1, two: 2}
+        if (err) {
+          utils.sendResponse(req, res, 200, 1, err);
+        }
+        console.log("---- Final result of production report data ----- ", results);
+        // utils.sendResponse(req, res, 200, -1, results);
+      }
+    );
+  };
+
+
   module.exports = {
   checkWorking: checkWorking,
   colletUserData: colletUserData,
@@ -272,5 +447,6 @@ const UpdateExistingDateOfStringFormat =()=>{
   Nyaka_Products_Data:Nyaka_Products_Data,
   DataBase_Facet_Pipeline : DataBase_Facet_Pipeline,
   DataBase_FacetPipeline_With_LookupWindUNwindProject : DataBase_FacetPipeline_With_LookupWindUNwindProject,
-   UpdateExistingDateOfStringFormat : UpdateExistingDateOfStringFormat
+   UpdateExistingDateOfStringFormat : UpdateExistingDateOfStringFormat,
+   getProductionReportTillGivenDates : getProductionReportTillGivenDates
 };

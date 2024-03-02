@@ -44,7 +44,8 @@ userRoutes.get("/database/facet/lookup", user.DataBase_FacetPipeline_With_Lookup
 userRoutes.get("/update/dates/from/string-to-date", user.UpdateExistingDateOfStringFormat);
 
 
-
+//Get Production DataBase Report   ---> getProductionReportTillGivenDate
+userRoutes.get("/get/production/report", user.getProductionReportTillGivenDates);
 
 module.exports = {
   userRoutes: userRoutes,
