@@ -37,7 +37,7 @@ const mergePDF_Func = async (pdfUrls, res) => {
       let fileNameHashed = "Merged_PDF" + Date.now();
 
       console.log(
-        "------------------------- fileNameHashed  ---------------------   ",
+        "------    fileNameHashed  ---------------------   ",
         fileNameHashed
       );
        resolve(mergedPdfBytes)

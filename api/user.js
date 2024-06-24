@@ -447,6 +447,6 @@ const getProductionReportTillGivenDates = async (req, res) => {
   Nyaka_Products_Data:Nyaka_Products_Data,
   DataBase_Facet_Pipeline : DataBase_Facet_Pipeline,
   DataBase_FacetPipeline_With_LookupWindUNwindProject : DataBase_FacetPipeline_With_LookupWindUNwindProject,
-   UpdateExistingDateOfStringFormat : UpdateExistingDateOfStringFormat,
-   getProductionReportTillGivenDates : getProductionReportTillGivenDates
+  UpdateExistingDateOfStringFormat : UpdateExistingDateOfStringFormat,
+  getProductionReportTillGivenDates : getProductionReportTillGivenDates
 };
