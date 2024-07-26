@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 require("dotenv").config();
 const cloudinary = require("cloudinary");
-const PORT =1111
+const PORT = process.env.PORT
 // process.env.PORT;
 const { userRoutes } = require("./Routes/user-routes");
 const { adminRoutes } = require("./Routes/admin-routes");
@@ -46,7 +46,7 @@ app.use("/" ,function (req, res, next) {
                                       });
   });
 
-app.listen((PORT || 8443 ), async (req, res) => {
+app.listen((PORT || 5040 ), async (req, res) => {
   console.log("----  App  Start ed Running -----");
   await connection;
   try {
