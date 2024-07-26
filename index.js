@@ -24,7 +24,7 @@ app.use("/admin", adminRoutes);
 
 /* error handling for 404 routes */
 app.use("/" ,function (req, res, next) {
-  console.log("---reached here --- ")
+  console.log("---reached here at global route ---- ")
 
   if(req.url ==  process.env.PRODUCTION_SERVER){
     res.status(err.status || 500).send({
@@ -46,8 +46,8 @@ app.use("/" ,function (req, res, next) {
                                       });
   });
 
-app.listen(PORT, async (req, res) => {
-  console.log("----  App  Started Running -----");
+app.listen((PORT || 8443 ), async (req, res) => {
+  console.log("----  App  Start ed Running -----");
   await connection;
   try {
     if (!connection) {
