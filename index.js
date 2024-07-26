@@ -23,17 +23,24 @@ app.use("/admin", adminRoutes);
 
 
 /* error handling for 404 routes */
-app.use(function (req, res, next) {
-  var err = new Error("request not found");
-  err.status = 404;
+app.use("/" ,function (req, res, next) {
+  console.log("---reached here --- ")
 
   if(req.url ==  process.env.PRODUCTION_SERVER){
     res.status(err.status || 500).send({
                                         errCode: 23,
                                         errMsg: "!Hello World Application Depeloyedd Suceefully",
                                       });
+                                      return 
   }
-  return res.status(err.status || 500).send({
+  if(req.url == "/" ){
+    res.status(200).send({
+      errCode: 23,
+      errMsg: "!Hello World Application Depeloyed Suceefully",
+    });
+    return
+  }
+  return res.status(200).send({
                                         errCode: 23,
                                         errMsg: "request not found",
                                       });
