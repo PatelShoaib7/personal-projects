@@ -47,6 +47,8 @@ userRoutes.get("/update/dates/from/string-to-date", user.UpdateExistingDateOfStr
 //Get Production DataBase Report   ---> getProductionReportTillGivenDate
 //userRoutes.get("/get/production/report", user.getProductionReportTillGivenDates);
 
+userRoutes.get("/get/airlines-data", user.GET_All_AIRLINES_LIST);
+
 module.exports = {
   userRoutes: userRoutes,
 };
