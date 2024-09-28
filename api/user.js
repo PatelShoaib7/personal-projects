@@ -439,6 +439,17 @@ const getProductionReportTillGivenDates = async (req, res) => {
   };
 
 
+  const GET_All_AIRLINES_LIST =async (req, res )=>{
+      // utils.sendResponse(req, res, 200, -1, results);
+    const AirLinesData =  await  mongoose.connection.db.collection("airlines_list").find().toArray()
+    if(AirLinesData && AirLinesData.length){
+      utils.sendResponse(req, res, 200, -1, AirLinesData );
+    }else{
+      utils.sendResponse(req, res, 200, -1, "Ooops Error Ocurred No data Found ");
+    }
+
+  }
+
   module.exports = {
   checkWorking: checkWorking,
   colletUserData: colletUserData,
@@ -448,5 +459,6 @@ const getProductionReportTillGivenDates = async (req, res) => {
   DataBase_Facet_Pipeline : DataBase_Facet_Pipeline,
   DataBase_FacetPipeline_With_LookupWindUNwindProject : DataBase_FacetPipeline_With_LookupWindUNwindProject,
   UpdateExistingDateOfStringFormat : UpdateExistingDateOfStringFormat,
-  getProductionReportTillGivenDates : getProductionReportTillGivenDates
+  getProductionReportTillGivenDates : getProductionReportTillGivenDates,
+  GET_All_AIRLINES_LIST  : GET_All_AIRLINES_LIST
 };
