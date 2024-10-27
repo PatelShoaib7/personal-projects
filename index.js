@@ -25,25 +25,13 @@ app.use("/admin", adminRoutes);
 /* error handling for 404 routes */
 app.use("/" ,function (req, res, next) {
   console.log("---reached here at global route ---- ")
-
-  if(req.url ==  process.env.PRODUCTION_SERVER){
-    res.status(err.status || 500).send({
-                                        errCode: 23,
-                                        errMsg: "!Hello World Application Depeloyedd Suceefully",
-                                      });
-                                      return 
-  }
   if(req.url == "/" ){
-    res.status(200).send({
-      errCode: 23,
-      errMsg: "!Hello World Application Depeloyed Suceefully",
-    });
+    res.status(200).send("!Hello World Application Depeloyed Suceefully")
     return
   }
-  return res.status(200).send({
-                                        errCode: 23,
-                                        errMsg: "request not found",
-                                      });
+  return res.status(200).send({errCode: 23,
+                              errMsg: "request not found",
+                             });
   });
 
 app.listen((PORT || 5040 ), async (req, res) => {
