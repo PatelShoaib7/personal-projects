@@ -50,19 +50,3 @@ userRoutes.get("/update/dates/from/string-to-date", user.UpdateExistingDateOfStr
 module.exports = {
   userRoutes: userRoutes,
 };
-
-// cloudinary.v2.uploader.upload("sample.pdf",
-//   function(error, result) {console.log(result, error); });
-
-
-
-// {
-//   $set: {
-//     dateField: {
-//       $dateToString: {
-//         date: '$dateField',
-//         format: '%d %B %Y' // Desired output format: 'DD Month YYYY'
-//       }
-//     }
-//   }
-// }
